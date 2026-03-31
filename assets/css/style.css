@@ -498,20 +498,417 @@ input:checked + .slider::before {
 
 .qty-number {
   font-weight: bold;
-  min-width: 20px;
-  text-align: center;
 }
 
-.subtotal {
-  margin-top: 10px;
-  font-weight: bold;
+/* Order History Styles */
+.order-card {
+  background-color: #111;
+  border: 1px solid #444;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+  text-align: left;
+}
+
+.order-card h3 {
+  color: gold;
+  margin-bottom: 10px;
+}
+
+.order-card p {
+  margin: 5px 0;
+  color: #ccc;
+}
+
+.order-items {
+  margin-top: 15px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.order-item strong {
   color: gold;
 }
 
-.cart-total-box {
-  margin-top: 40px;
-  text-align: right;
-  font-size: 20px;
-  font-weight: bold;
-  color: gold;
+.order-item p {
+  color: #fff;
+  font-size: 14px;
+}
+
+/* ================= ORDER SUCCESS PAGE ================= */
+
+.success-section {
+    padding: 60px 30px;
+    text-align: center;
+    min-height: calc(100vh - 180px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-container {
+    background-color: #111;
+    border: 1px solid gold;
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 600px;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+    backdrop-filter: blur(5px);
+    background-color: rgba(17, 17, 17, 0.85);
+}
+
+.success-container h2 {
+    color: gold;
+    margin-bottom: 20px;
+}
+
+.success-container p {
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.success-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, gold, #ffcc00);
+    color: black;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: gold;
+    border: 1px solid gold;
+}
+
+.btn-secondary:hover {
+    background-color: gold;
+    color: black;
+}
+
+/* Order History Styles */
+.order-card {
+    background-color: #111;
+    border: 1px solid #444;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+    text-align: left;
+}
+
+.order-card h3 {
+    color: gold;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.order-card p {
+    margin: 5px 0;
+    color: #ccc;
+}
+
+.order-items {
+    margin-top: 20px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.order-item div {
+    flex: 1;
+}
+
+.order-item strong {
+    color: gold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.order-item p {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* === Profile / Dashboard / Global Components === */
+.profile-container,
+.dashboard-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px 40px;
+    color: #f8f8f8;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #321f0b 0%, #260f03 100%);
+    color: #fff;
+}
+
+.profile-header h1,
+.profile-header p {
+    color: #fff;
+}
+
+.profile-avatar {
+    background: #e2c08a;
+    color: #301f0e;
+}
+
+.profile-tabs {
+    border: 1px solid #4a3a24;
+    background: #1a1410;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    color: #ddd;
+    background: #1a1410;
+    border-right: 1px solid #4a3a24;
+}
+
+.tab-btn:last-child {
+    border-right: none;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.tab-content {
+    background: #0f0b08;
+    border: 1px solid #4a3a24;
+    padding: 24px;
+}
+
+.setting-card,
+.quick-actions .action-card,
+.order-card,
+.success-container,
+.cart-item {
+    background: #0d0a08;
+    border: 1px solid #3f2e1e;
+}
+
+a.logout-trigger {
+    color: #ffcccc;
+    transition: color 0.2s ease;
+}
+
+a.logout-trigger:hover {
+    color: #ff6666;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-overlay .modal-box {
+    background: #110d0a;
+    color: #fff;
+    border: 1px solid #5f472d;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    border-radius: 14px;
+    width: clamp(280px, 90%, 420px);
+    padding: 22px;
+}
+
+.modal-overlay .modal-box h3 {
+    margin-top: 0;
+    color: #ffd56a;
+}
+
+.modal-overlay .modal-box p {
+    color: #ccc;
+}
+
+.modal-overlay .modal-box .modal-controls button {
+    border: 1px solid #776049;
+    background: #2f2417;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-overlay .modal-box .modal-controls button:hover {
+    background: #5e4a36;
+}
+
+.modal-overlay .modal-box .modal-controls button.confirm {
+    background: #c32929;
+    border-color: #a32424;
+}
+
+.modal-overlay .modal-box .modal-controls button.confirm:hover {
+    background: #de3a3a;
+}
+
+.alert {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #f5f5f5;
+}
+
+.alert-success {
+    background: #1d3218;
+    border-color: #295726;
+}
+
+.alert-error {
+    background: #331d20;
+    border-color: #662b2d;
+}
+
+/* Admin Specific Enhancements */
+.admin-body {
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+}
+
+/* Enhanced Stat Cards */
+.stats-grid .stat-card {
+    background: linear-gradient(145deg, #1a1a1a, #111);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-grid .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: gold;
+}
+
+.stats-grid .stat-card:hover {
+    transform: translateY(-5px);
+    border-color: gold;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.stat-number {
+    color: gold !important;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Dark Mode Tables */
+.orders-table, .menu-table, .users-table {
+    background: #111 !important;
+    border: 1px solid #333;
+    border-radius: 12px;
+}
+
+table th {
+    background-color: #1a1a1a !important;
+    color: gold !important;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid gold !important;
+}
+
+table td {
+    border-bottom: 1px solid #222 !important;
+    color: #ccc;
+}
+
+/* Status Select Styling */
+.status-select {
+    background: #000;
+    color: gold;
+    border: 1px solid #444;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.status-select:focus {
+    border-color: gold;
+    outline: none;
+}
+
+.add-item-form {
+    background: #111 !important;
+    border: 1px solid gold !important;
+    padding: 30px !important;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1) !important;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    background: #000 !important;
+    border: 1px solid #444 !important;
+    color: #fff !important;
+    padding: 12px !important;
+}
+
+.form-group input:focus {
+    border-color: gold !important;
 }

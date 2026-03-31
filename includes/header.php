@@ -42,8 +42,10 @@ if (session_status() === PHP_SESSION_NONE) {
       🛒 Cart
       (<?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0; ?>)
     </a>
+    <a href="/TheWhisperingSpoon/user/my-orders.php">My Orders</a>
     <?php if (isset($_SESSION["user_id"])): ?>
-      <a href="/TheWhisperingSpoon/public/profile.php">Profile</a>
+      <a href="/TheWhisperingSpoon/user/profile.php">Profile</a>
+      <a href="#" class="logout-trigger">Logout</a>
     <?php else: ?>
       <a href="/TheWhisperingSpoon/auth/login.php">Login</a>
       <a href="/TheWhisperingSpoon/auth/register.php">Register</a>

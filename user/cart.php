@@ -59,6 +59,10 @@ $total = 0;
     <h3>Total: ₹<?php echo $total; ?></h3>
   </div>
 
+  <div class="cart-checkout">
+    <a href="checkout.php" class="login-btn" style="max-width: 200px; margin: 20px auto;">Proceed to Checkout</a>
+  </div>
+
 <?php endif; ?>
 
 </section>
