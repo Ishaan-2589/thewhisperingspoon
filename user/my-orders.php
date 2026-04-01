@@ -132,12 +132,18 @@ include "../includes/header.php";
                             <?php echo $order['status']; ?>
                         </span>
                         
-                        <?php if ($order['status'] !== 'Cancelled'): ?>
-                        <form method="POST" style="margin: 0;">
-                            <input type="hidden" name="reorder_id" value="<?php echo $order['id']; ?>">
-                            <button type="submit" class="btn-reorder"><i class="fas fa-redo-alt"></i> Reorder</button>
-                        </form>
-                        <?php endif; ?>
+                        <div style="display: flex; gap: 10px; margin-top: 5px;">
+                            <a href="receipt.php?id=<?php echo $order['id']; ?>" target="_blank" class="btn-reorder" style="border-color: #888; color: #ccc;">
+                                <i class="fas fa-file-pdf"></i> Receipt
+                            </a>
+
+                            <?php if ($order['status'] !== 'Cancelled'): ?>
+                            <form method="POST" style="margin: 0;">
+                                <input type="hidden" name="reorder_id" value="<?php echo $order['id']; ?>">
+                                <button type="submit" class="btn-reorder"><i class="fas fa-redo-alt"></i> Reorder</button>
+                            </form>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
 

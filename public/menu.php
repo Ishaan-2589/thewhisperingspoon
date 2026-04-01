@@ -25,7 +25,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 /* 1. The Hero Banner Fix */
 .hero.menu-hero {
-    /* Adding a dark gradient overlay so the gold text is perfectly readable */
     background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('../assets/images/others/banner.png');
     background-size: cover;
     background-position: center;
@@ -39,7 +38,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 /* 2. Sleek Pill-Shaped Filter Buttons */
 .filter-wrapper {
     position: sticky;
-    top: 0; /* Adjust this if you have a fixed header */
+    top: 0; 
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     z-index: 100;
@@ -61,17 +60,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     transition: all 0.3s ease;
 }
 
-.filter-btn:hover {
-    border-color: gold;
-    color: #fff;
-}
-
-.filter-btn.active {
-    background: gold;
-    color: #000;
-    border-color: gold;
-    font-weight: bold;
-}
+.filter-btn:hover { border-color: gold; color: #fff; }
+.filter-btn.active { background: gold; color: #000; border-color: gold; font-weight: bold; }
 
 /* 3. Perfect Grid Layout for Cards */
 .menu-grid {
@@ -107,12 +97,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     border-bottom: 1px solid #222;
 }
 
-.menu-card .info {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
+.menu-card .info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
 
 .card-title {
     font-family: 'Playfair Display', serif;
@@ -124,58 +109,25 @@ while ($row = mysqli_fetch_assoc($result)) {
     gap: 8px;
 }
 
-.veg-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
+.veg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 .veg-dot.veg { background-color: #00ff88; box-shadow: 0 0 8px rgba(0,255,136,0.4); }
 .veg-dot.non-veg { background-color: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.4); }
 
-.card-desc {
-    color: #888;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
+.card-desc { color: #888; font-size: 14px; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.card-price { font-size: 20px; color: gold; font-weight: bold; }
 
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-}
+.btn-add { background: transparent; color: gold; border: 1px solid gold; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+.btn-add:hover { background: gold; color: #000; }
 
-.card-price {
-    font-size: 20px;
-    color: gold;
-    font-weight: bold;
-}
-
-.btn-add {
-    background: transparent;
-    color: gold;
-    border: 1px solid gold;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-add:hover {
-    background: gold;
-    color: #000;
-}
-
-/* Animations */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Make the title link look good */
+.dish-link { color: inherit; text-decoration: none; transition: color 0.3s; }
+.dish-link:hover { color: gold; }
 </style>
 
 <section class="hero menu-hero">
@@ -207,14 +159,18 @@ while ($row = mysqli_fetch_assoc($result)) {
                  data-category="<?php echo htmlspecialchars($item['category']); ?>" 
                  data-veg="<?php echo $item['is_veg']; ?>">
                  
-                <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" 
-                     alt="<?php echo htmlspecialchars($item['name']); ?>"
-                     onerror="this.src='../assets/images/others/placeholder.jpg'">
+                <a href="item-details.php?id=<?php echo $item['id']; ?>">
+                    <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" 
+                         alt="<?php echo htmlspecialchars($item['name']); ?>"
+                         onerror="this.src='../assets/images/others/placeholder.jpg'">
+                </a>
                 
                 <div class="info">
                     <h3 class="card-title">
                         <span class="veg-dot <?php echo $item['is_veg'] ? 'veg' : 'non-veg'; ?>"></span>
-                        <?php echo htmlspecialchars($item['name']); ?>
+                        <a href="item-details.php?id=<?php echo $item['id']; ?>" class="dish-link">
+                            <?php echo htmlspecialchars($item['name']); ?>
+                        </a>
                     </h3>
                     
                     <p class="card-desc"><?php echo htmlspecialchars($item['description']); ?></p>
@@ -253,10 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let vegMatch = (!isVegOnly || isItemVeg);
 
             if (categoryMatch && vegMatch) {
-                card.style.display = 'flex'; // Use flex so the card layout doesn't break
+                card.style.display = 'flex'; 
                 card.style.animation = 'none';
-                card.offsetHeight; /* trigger reflow */
-                // Stagger the animation slightly for a cool effect
+                card.offsetHeight; 
                 card.style.animation = `fadeInUp 0.4s ease forwards ${index * 0.05}s`;
             } else {
                 card.style.display = 'none';
@@ -275,8 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     vegToggle.addEventListener('change', applyFilters);
 });
 
-// REPLACE your addToCart function in public/menu.php with this:
-
 function addToCart(id, name, price, image) {
     let formData = new FormData();
     formData.append('id', id);
@@ -288,9 +241,7 @@ function addToCart(id, name, price, image) {
     .then(response => response.json())
     .then(data => {
         if(data.status === 'success') {
-            // THIS is the magic line that updates the header instantly!
             document.getElementById('cart-counter').innerText = data.totalItems;
-            
             showToast(`${name} added!`);
         }
     })

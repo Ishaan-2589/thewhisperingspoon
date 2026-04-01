@@ -22,6 +22,14 @@ foreach ($_SESSION['cart'] as $id => $quantity) {
         $grandTotal += $item['price'] * $quantity;
     }
 }
+// NEW: Check if store is open
+$statusQuery = "SELECT setting_value FROM settings WHERE setting_key = 'store_status'";
+$statusResult = mysqli_fetch_assoc(mysqli_query($conn, $statusQuery));
+$storeStatus = $statusResult['setting_value'] ?? 'open';
+
+if ($storeStatus === 'closed') {
+    $error = "We're sorry! The kitchen is currently closed. We cannot accept new orders at this time.";
+}
 
 // Handle Form Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -135,7 +143,11 @@ include "../includes/header.php";
                 <textarea name="special_requests" id="special_requests" rows="3" placeholder="Any specific dietary restrictions or cooking instructions?"></textarea>
             </div>
             
-            <button type="submit" class="btn-place-order" id="submit-btn">Place Order Now</button>
+            <button type="submit" class="btn-place-order" id="submit-btn">Place Order Now</button><?php if ($storeStatus === 'open'): ?>
+                <button type="submit" class="btn-place-order" id="submit-btn">Place Order Now</button>
+            <?php else: ?>
+                <button type="button" class="btn-place-order" style="background: #444; color: #888; cursor: not-allowed;" disabled>Kitchen is Closed</button>
+            <?php endif; ?>
         </form>
     </div>
 
