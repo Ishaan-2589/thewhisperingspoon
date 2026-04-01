@@ -1,0 +1,10 @@
+# 1. Disable Directory Browsing (Prevents people from seeing a list of your files)
+Options -Indexes
+
+# 2. Hide Server Signature (Don't tell hackers what version of Apache you are using)
+ServerSignature Off
+
+# 3. Protect specific sensitive files from being read directly
+<FilesMatch "^(db\.php|admin-auth\.php)$">
+    Require all denied
+</FilesMatch>
