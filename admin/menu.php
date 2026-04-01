@@ -3,10 +3,11 @@ session_start();
 require_once "../includes/db.php";
 require_once "../includes/admin-auth.php";
 
-// Handle form submissions
+// Handle form submissions (Add/Update/Delete)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // ADD ITEM
     if (isset($_POST['add_item'])) {
-        // Add new menu item
         $name = trim($_POST['name']);
         $description = trim($_POST['description']);
         $price = (float) $_POST['price'];
@@ -19,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_bind_param($stmt, "ssdssi", $name, $description, $price, $image, $category, $is_veg);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-
         $success = "Menu item added successfully!";
-    } elseif (isset($_POST['update_item'])) {
-        // Update existing item
+    } 
+    
+    // UPDATE ITEM (The Missing Functionality!)
+    elseif (isset($_POST['update_item'])) {
         $id = (int) $_POST['item_id'];
         $name = trim($_POST['name']);
         $description = trim($_POST['description']);
@@ -36,22 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_bind_param($stmt, "ssdssii", $name, $description, $price, $image, $category, $is_veg, $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-
         $success = "Menu item updated successfully!";
-    } elseif (isset($_POST['delete_item'])) {
-        // Delete item
+    }
+    
+    // DELETE ITEM
+    elseif (isset($_POST['delete_item'])) {
         $id = (int) $_POST['item_id'];
         $deleteQuery = "DELETE FROM menu_items WHERE id=?";
         $stmt = mysqli_prepare($conn, $deleteQuery);
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-
         $success = "Menu item deleted successfully!";
     }
 }
 
-// Get all menu items
+// Fetch all menu items
 $query = "SELECT * FROM menu_items ORDER BY category, name";
 $result = mysqli_query($conn, $query);
 $menuItems = [];
@@ -60,163 +62,77 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-<?php include "../includes/header.php"; ?>
+<?php include "../includes/admin-header.php"; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Menu - Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        .menu-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<style>
+body { background-color: #050505; color: #fff; }
+.admin-container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+.page-header h1 { color: gold; font-family: 'Playfair Display', serif; font-size: 32px; margin: 0; }
+.btn-back { color: #888; text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+.btn-back:hover { color: gold; }
 
-        .add-item-form, .menu-table {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
+.menu-layout { display: grid; grid-template-columns: 350px 1fr; gap: 30px; align-items: start; }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+/* Form Styles */
+.form-card { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #222; }
+.form-card h3 { color: gold; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 6px; color: #aaa; font-size: 12px; text-transform: uppercase; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: 'Roboto', sans-serif;}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: gold; outline: none; }
+.checkbox-group { display: flex; align-items: center; gap: 10px; }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+.btn-submit { width: 100%; padding: 12px; background: gold; color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; margin-top: 10px; }
+.btn-submit:hover { background: #ffcc00; box-shadow: 0 5px 15px rgba(255,215,0,0.2); }
 
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+/* Table Styles */
+.table-wrapper { background: #111; border: 1px solid #222; border-radius: 12px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { background: #1a1a1a; color: gold; padding: 15px; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #333; }
+td { padding: 15px; border-bottom: 1px solid #222; color: #ccc; font-size: 14px; vertical-align: middle; }
+tr:hover { background: #151515; }
+.item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #333; }
+.category-badge { background: #222; color: #aaa; padding: 4px 10px; border-radius: 20px; font-size: 11px; text-transform: uppercase; }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
+.action-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 16px; margin-right: 10px; transition: 0.2s;}
+.action-btn:hover { color: gold; }
+.action-btn.delete:hover { color: #ff4444; }
 
-        .form-row .form-group {
-            flex: 1;
-        }
+/* Modal Styles */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+.modal-content { width: 100%; max-width: 450px; position: relative; }
+.close-modal { position: absolute; top: 20px; right: 20px; background: transparent; color: #fff; border: none; font-size: 24px; cursor: pointer; transition: 0.3s; }
+.close-modal:hover { color: gold; }
+</style>
 
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .checkbox-group input {
-            width: auto;
-            margin-right: 8px;
-        }
-
-        .btn {
-            background: #8B4513;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: #654321;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f8f8f8;
-            font-weight: bold;
-        }
-
-        .veg-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
-        .veg { background-color: #28a745; }
-        .non-veg { background-color: #dc3545; }
-
-        .actions {
-            white-space: nowrap;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #8B4513;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-<div class="menu-container">
-    <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
-    <h1 style="color: #8B4513; margin-bottom: 20px;">Manage Menu Items</h1>
+<div class="admin-container">
+    <div class="page-header">
+        <h1><i class="fas fa-utensils" style="margin-right: 10px; font-size: 24px; color: #555;"></i> Menu Management</h1>
+        <a href="dashboard.php" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
 
     <?php if (isset($success)): ?>
-        <div class="success"><?php echo $success; ?></div>
+        <div style="background: rgba(0,255,136,0.1); color: #00ff88; padding: 15px; border-radius: 8px; border: 1px solid #00ff88; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i> <?php echo $success; ?>
+        </div>
     <?php endif; ?>
 
-    <div class="add-item-form">
-        <h3>Add New Menu Item</h3>
-        <form method="POST">
-            <div class="form-row">
+    <div class="menu-layout">
+        <div class="form-card">
+            <h3>Add New Dish</h3>
+            <form method="POST">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <label>Dish Name</label>
+                    <input type="text" name="name" required placeholder="e.g. Truffle Pasta">
                 </div>
                 <div class="form-group">
-                    <label for="price">Price (₹)</label>
-                    <input type="number" id="price" name="price" step="0.01" required>
+                    <label>Price (₹)</label>
+                    <input type="number" step="0.01" name="price" required placeholder="299.00">
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select id="category" name="category" required>
+                    <label>Category</label>
+                    <select name="category" required>
                         <option value="soup">Soup</option>
                         <option value="salad">Salad</option>
                         <option value="nibbles">Nibbles</option>
@@ -227,86 +143,87 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <option value="beverages">Beverages</option>
                     </select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="3"></textarea>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
-                    <label for="image">Image Path</label>
-                    <input type="text" id="image" name="image" placeholder="e.g., soup/manchow.jpg">
+                    <label>Image File Path</label>
+                    <input type="text" name="image" placeholder="pizza/margherita.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3" required placeholder="A brief description..."></textarea>
                 </div>
                 <div class="form-group checkbox-group">
-                    <input type="checkbox" id="is_veg" name="is_veg" checked>
-                    <label for="is_veg">Vegetarian</label>
+                    <input type="checkbox" id="is_veg" name="is_veg" value="1" checked style="width: auto;">
+                    <label for="is_veg" style="margin:0; font-size: 14px; color: #fff;">This item is Vegetarian</label>
                 </div>
-            </div>
-            <button type="submit" name="add_item" class="btn">Add Item</button>
-        </form>
-    </div>
+                <button type="submit" name="add_item" class="btn-submit">Add to Menu</button>
+            </form>
+        </div>
 
-    <div class="menu-table">
-        <h3>Existing Menu Items</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($menuItems as $item): ?>
+        <div class="table-wrapper">
+            <table>
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($item['name']); ?></td>
-                        <td><?php echo ucfirst($item['category']); ?></td>
-                        <td>₹<?php echo number_format($item['price'], 2); ?></td>
-                        <td>
-                            <span class="veg-indicator <?php echo $item['is_veg'] ? 'veg' : 'non-veg'; ?>"></span>
-                            <?php echo $item['is_veg'] ? 'Veg' : 'Non-Veg'; ?>
-                        </td>
-                        <td class="actions">
-                            <button onclick="editItem(<?php echo $item['id']; ?>)" class="btn">Edit</button>
-                            <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this item?')">
-                                <input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
-                                <button type="submit" name="delete_item" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
+                        <th width="70">Image</th>
+                        <th>Details</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th style="text-align: right;">Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($menuItems as $item): ?>
+                        <tr>
+                            <td>
+                                <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" class="item-img" onerror="this.src='../assets/images/others/placeholder.jpg'">
+                            </td>
+                            <td>
+                                <div style="color: #fff; font-weight: bold; margin-bottom: 4px;">
+                                    <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:<?php echo $item['is_veg'] ? '#00ff88' : '#ff4444'; ?>; margin-right:5px;"></span>
+                                    <?php echo htmlspecialchars($item['name']); ?>
+                                </div>
+                                <div style="font-size: 12px; color: #666;"><?php echo substr(htmlspecialchars($item['description']), 0, 40); ?>...</div>
+                            </td>
+                            <td><span class="category-badge"><?php echo htmlspecialchars($item['category']); ?></span></td>
+                            <td style="color: gold; font-weight: bold;">₹<?php echo number_format($item['price'], 2); ?></td>
+                            <td style="text-align: right;">
+                                
+                                <button class="action-btn" onclick='openEditModal(<?php echo json_encode($item, JSON_HEX_APOS | JSON_HEX_QUOT); ?>)' title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                
+                                <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this dish?');">
+                                    <input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
+                                    <button type="submit" name="delete_item" class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<!-- Edit Modal (simplified - in production, use proper modal) -->
-<div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
-        <h3>Edit Menu Item</h3>
-        <form method="POST" id="editForm">
-            <input type="hidden" name="item_id" id="edit_item_id">
-            <!-- Form fields similar to add form -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="edit_name">Name</label>
-                    <input type="text" id="edit_name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit_price">Price (₹)</label>
-                    <input type="number" id="edit_price" name="price" step="0.01" required>
-                </div>
-            </div>
+<div id="editModal" class="modal-overlay">
+    <div class="form-card modal-content">
+        <button type="button" class="close-modal" onclick="closeEditModal()">&times;</button>
+        <h3>Edit Dish</h3>
+        <form method="POST">
+            <input type="hidden" name="item_id" id="edit_id">
+            
             <div class="form-group">
-                <label for="edit_description">Description</label>
-                <textarea id="edit_description" name="description" rows="3"></textarea>
+                <label>Dish Name</label>
+                <input type="text" name="name" id="edit_name" required>
             </div>
-            <div class="form-row">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
-                    <label for="edit_category">Category</label>
-                    <select id="edit_category" name="category" required>
+                    <label>Price (₹)</label>
+                    <input type="number" step="0.01" name="price" id="edit_price" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" id="edit_category" required>
                         <option value="soup">Soup</option>
                         <option value="salad">Salad</option>
                         <option value="nibbles">Nibbles</option>
@@ -317,37 +234,50 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <option value="beverages">Beverages</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="edit_image">Image Path</label>
-                    <input type="text" id="edit_image" name="image">
-                </div>
             </div>
+            
+            <div class="form-group">
+                <label>Image File Path</label>
+                <input type="text" name="image" id="edit_image">
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" id="edit_description" rows="3" required></textarea>
+            </div>
+            
             <div class="form-group checkbox-group">
-                <input type="checkbox" id="edit_is_veg" name="is_veg">
-                <label for="edit_is_veg">Vegetarian</label>
+                <input type="checkbox" id="edit_is_veg" name="is_veg" value="1" style="width: auto;">
+                <label for="edit_is_veg" style="margin:0; font-size: 14px; color: #fff;">This item is Vegetarian</label>
             </div>
-            <div style="text-align: right; margin-top: 15px;">
-                <button type="button" onclick="closeEditModal()" class="btn" style="background: #6c757d; margin-right: 10px;">Cancel</button>
-                <button type="submit" name="update_item" class="btn">Update Item</button>
-            </div>
+            
+            <button type="submit" name="update_item" class="btn-submit">Save Changes</button>
         </form>
     </div>
 </div>
 
 <script>
-function editItem(itemId) {
-    // In a real application, you'd fetch item data via AJAX
-    // For now, this is a placeholder
-    alert('Edit functionality would be implemented with AJAX to fetch item data');
-    document.getElementById('editModal').style.display = 'block';
+function openEditModal(item) {
+    // Fill the hidden ID field
+    document.getElementById('edit_id').value = item.id;
+    
+    // Fill the text fields
+    document.getElementById('edit_name').value = item.name;
+    document.getElementById('edit_price').value = item.price;
+    document.getElementById('edit_category').value = item.category;
+    document.getElementById('edit_image').value = item.image;
+    document.getElementById('edit_description').value = item.description;
+    
+    // Handle the checkbox (1 = true/checked in DB)
+    document.getElementById('edit_is_veg').checked = (item.is_veg == 1);
+    
+    // Show the modal using Flexbox
+    document.getElementById('editModal').style.display = 'flex';
 }
 
 function closeEditModal() {
     document.getElementById('editModal').style.display = 'none';
 }
 </script>
-
-</body>
-</html>
 
 <?php include "../includes/footer.php"; ?>

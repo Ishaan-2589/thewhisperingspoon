@@ -3,7 +3,7 @@ session_start();
 require_once "../includes/db.php";
 require_once "../includes/admin-auth.php";
 
-// Handle status updates
+// 1. THE ACTUAL UPDATE LOGIC (No Placeholders!)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id']) && isset($_POST['status'])) {
     $orderId = (int) $_POST['order_id'];
     $status = $_POST['status'];
@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id']) && isset(
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        $success = "Order status updated successfully!";
+        $success = "Order #".str_pad($orderId, 5, '0', STR_PAD_LEFT)." marked as ".$status."!";
     }
 }
 
-// Get all orders with user details
+// 2. Fetch Orders
 $query = "SELECT o.*, u.name as user_name, u.email as user_email
           FROM orders o
-          JOIN users u ON o.user_id = u.id
+          LEFT JOIN users u ON o.user_id = u.id
           ORDER BY o.created_at DESC";
 $result = mysqli_query($conn, $query);
 $orders = [];
@@ -32,141 +32,91 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-<?php include "../includes/header.php"; ?>
+<?php include "../includes/admin-header.php"; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Orders - Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        .orders-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<style>
+body { background-color: #050505; color: #fff; }
+.admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+.page-header h1 { color: gold; font-family: 'Playfair Display', serif; font-size: 32px; margin: 0; }
+.btn-back { color: #888; text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+.btn-back:hover { color: gold; }
 
-        .orders-table {
-            width: 100%;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+.table-wrapper { background: #111; border: 1px solid #222; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { background: #1a1a1a; color: gold; padding: 18px 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #333; }
+td { padding: 18px 20px; border-bottom: 1px solid #222; color: #ccc; font-size: 14px; vertical-align: middle; }
+tr:hover { background: #151515; }
 
-        .orders-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.status-select { 
+    background: #000; color: #fff; border: 1px solid #444; padding: 8px 12px; 
+    border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; outline: none; transition: 0.3s;
+}
+.status-select:focus { border-color: gold; }
+.status-select option[value="Pending"] { color: #ffcc00; }
+.status-select option[value="Preparing"] { color: #00c3ff; }
+.status-select option[value="Ready"] { color: #00ff88; }
+.status-select option[value="Delivered"] { color: #888; }
+.status-select option[value="Cancelled"] { color: #ff4444; }
 
-        .orders-table th, .orders-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+.btn-view { background: #222; color: gold; border: 1px solid #444; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; text-transform: uppercase; }
+.btn-view:hover { border-color: gold; background: #333; }
 
-        .orders-table th {
-            background-color: #f8f8f8;
-            font-weight: bold;
-            color: #8B4513;
-        }
+.details-row td { background: #0a0a0a; padding: 20px; border-bottom: 2px solid #333;}
+.details-list { list-style: none; padding: 0; margin: 0; }
+.details-list li { padding: 8px 0; border-bottom: 1px dashed #222; display: flex; justify-content: space-between; }
+.details-list li:last-child { border-bottom: none; }
+</style>
 
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .status-pending { background-color: #fff3cd; color: #856404; }
-        .status-preparing { background-color: #d1ecf1; color: #0c5460; }
-        .status-ready { background-color: #d4edda; color: #155724; }
-        .status-delivered { background-color: #d1ecf1; color: #0c5460; }
-        .status-cancelled { background-color: #f8d7da; color: #721c24; }
-
-        .status-select {
-            padding: 4px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .update-btn {
-            background: #8B4513;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .update-btn:hover {
-            background: #654321;
-        }
-
-        .order-details {
-            background: #f9f9f9;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 4px;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #8B4513;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-<div class="orders-container">
-    <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
-    <h1 style="color: #8B4513; margin-bottom: 20px;">Manage Orders</h1>
+<div class="admin-container">
+    <div class="page-header">
+        <h1><i class="fas fa-receipt" style="margin-right: 10px; font-size: 24px; color: #555;"></i> Order Management</h1>
+        <div>
+            <a href="live-kitchen.php" style="background: rgba(0,255,136,0.1); color: #00ff88; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; margin-right: 15px; border: 1px solid #00ff88;"><i class="fas fa-tv"></i> Live Kitchen</a>
+            <a href="dashboard.php" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+    </div>
 
     <?php if (isset($success)): ?>
-        <div class="success"><?php echo $success; ?></div>
+        <div style="background: rgba(0,255,136,0.1); color: #00ff88; padding: 15px; border-radius: 8px; border: 1px solid #00ff88; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i> <?php echo $success; ?>
+        </div>
     <?php endif; ?>
 
-    <div class="orders-table">
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
                     <th>Order ID</th>
                     <th>Customer</th>
-                    <th>Email</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                    <th>Date & Time</th>
+                    <th>Total</th>
+                    <th>Live Status</th>
+                    <th style="text-align: right;">Items</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($orders as $order): ?>
                     <tr>
-                        <td>#<?php echo $order['id']; ?></td>
-                        <td><?php echo htmlspecialchars($order['user_name']); ?></td>
-                        <td><?php echo htmlspecialchars($order['user_email']); ?></td>
-                        <td>₹<?php echo number_format($order['total_amount'], 2); ?></td>
+                        <td style="font-family: monospace; font-size: 16px; font-weight: bold; color: #fff;">#<?php echo str_pad($order['id'], 5, '0', STR_PAD_LEFT); ?></td>
                         <td>
-                            <form method="POST" style="display: inline;">
+                            <div style="color: gold; font-weight: bold; margin-bottom: 4px;"><?php echo htmlspecialchars($order['user_name'] ?? 'Guest'); ?></div>
+                            <div style="font-size: 12px; color: #666;"><?php echo htmlspecialchars($order['user_email'] ?? 'N/A'); ?></div>
+                        </td>
+                        <td><?php echo date('d M, Y', strtotime($order['created_at'])); ?><br><small style="color:#666;"><?php echo date('h:i A', strtotime($order['created_at'])); ?></small></td>
+                        <td style="color: #fff; font-weight: bold;">₹<?php echo number_format($order['total_amount'], 2); ?></td>
+                        
+                        <td>
+                            <form method="POST" style="margin: 0;">
                                 <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
-                                <select name="status" class="status-select" onchange="this.form.submit()">
+                                <select name="status" class="status-select" onchange="this.form.submit()" style="border-left: 4px solid 
+                                    <?php 
+                                        if($order['status']=='Pending') echo '#ffcc00';
+                                        elseif($order['status']=='Preparing') echo '#00c3ff';
+                                        elseif($order['status']=='Ready') echo '#00ff88';
+                                        elseif($order['status']=='Cancelled') echo '#ff4444';
+                                        else echo '#888';
+                                    ?>;">
                                     <option value="Pending" <?php echo $order['status'] === 'Pending' ? 'selected' : ''; ?>>Pending</option>
                                     <option value="Preparing" <?php echo $order['status'] === 'Preparing' ? 'selected' : ''; ?>>Preparing</option>
                                     <option value="Ready" <?php echo $order['status'] === 'Ready' ? 'selected' : ''; ?>>Ready</option>
@@ -175,29 +125,30 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 </select>
                             </form>
                         </td>
-                        <td><?php echo date('M d, Y H:i', strtotime($order['created_at'])); ?></td>
-                        <td>
-                            <button onclick="toggleOrderDetails(<?php echo $order['id']; ?>)" class="update-btn">View Details</button>
+                        
+                        <td style="text-align: right;">
+                            <button class="btn-view" onclick="toggleOrderDetails(<?php echo $order['id']; ?>)">View Details <i class="fas fa-chevron-down"></i></button>
                         </td>
                     </tr>
-                    <tr id="details-<?php echo $order['id']; ?>" style="display: none;">
-                        <td colspan="7">
-                            <div class="order-details">
-                                <h4>Order Items:</h4>
-                                <?php
-                                $itemsQuery = "SELECT oi.*, mi.name FROM order_items oi JOIN menu_items mi ON oi.menu_item_id = mi.id WHERE oi.order_id = ?";
-                                $stmt = mysqli_prepare($conn, $itemsQuery);
-                                mysqli_stmt_bind_param($stmt, "i", $order['id']);
-                                mysqli_stmt_execute($stmt);
-                                $itemsResult = mysqli_stmt_get_result($stmt);
-                                ?>
-                                <ul>
-                                    <?php while ($item = mysqli_fetch_assoc($itemsResult)): ?>
-                                        <li><?php echo htmlspecialchars($item['name']); ?> x <?php echo $item['quantity']; ?> = ₹<?php echo number_format($item['price'] * $item['quantity'], 2); ?></li>
-                                    <?php endwhile; ?>
-                                </ul>
-                                <?php mysqli_stmt_close($stmt); ?>
-                            </div>
+                    
+                    <tr id="details-<?php echo $order['id']; ?>" class="details-row" style="display: none;">
+                        <td colspan="6">
+                            <?php
+                            $itemsQuery = "SELECT oi.*, mi.name FROM order_items oi JOIN menu_items mi ON oi.menu_item_id = mi.id WHERE oi.order_id = ?";
+                            $stmt = mysqli_prepare($conn, $itemsQuery);
+                            mysqli_stmt_bind_param($stmt, "i", $order['id']);
+                            mysqli_stmt_execute($stmt);
+                            $itemsResult = mysqli_stmt_get_result($stmt);
+                            ?>
+                            <ul class="details-list">
+                                <?php while ($item = mysqli_fetch_assoc($itemsResult)): ?>
+                                    <li>
+                                        <span><span style="color: gold; font-weight: bold; margin-right: 10px;"><?php echo $item['quantity']; ?>x</span> <?php echo htmlspecialchars($item['name']); ?></span>
+                                        <span style="color: #aaa;">₹<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
+                            <?php mysqli_stmt_close($stmt); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -209,11 +160,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 <script>
 function toggleOrderDetails(orderId) {
     const detailsRow = document.getElementById('details-' + orderId);
-    detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+    if (detailsRow.style.display === 'none') {
+        detailsRow.style.display = 'table-row';
+    } else {
+        detailsRow.style.display = 'none';
+    }
 }
 </script>
-
-</body>
-</html>
 
 <?php include "../includes/footer.php"; ?>

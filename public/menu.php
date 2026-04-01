@@ -1,207 +1,311 @@
-<?php 
-include "../includes/header.php"; 
-include "../includes/db.php";
+<?php
+session_start();
+require_once "../includes/db.php";
 
-// Fetch menu items from database
+// Fetch all menu items from the database
 $query = "SELECT * FROM menu_items ORDER BY category, name";
 $result = mysqli_query($conn, $query);
 
 $menuItems = [];
+$categories = [];
+
 while ($row = mysqli_fetch_assoc($result)) {
-    $menuItems[$row['category']][] = $row;
+    $menuItems[] = $row;
+    // Keep track of unique categories for our filter buttons
+    if (!in_array($row['category'], $categories)) {
+        $categories[] = $row['category'];
+    }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Whispering Spoon - Menu</title>
+<?php include "../includes/header.php"; ?>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Allura&family=Dancing+Script&family=Great+Vibes&family=Parisienne&family=Playfair+Display:wght@500;700&family=Roboto:wght@400;700&family=Satisfy&family=Sacramento&family=Tangerine&display=swap"
-    rel="stylesheet">
+<style>
+/* --- Beautification Styles for Menu Page --- */
+
+/* 1. The Hero Banner Fix */
+.hero.menu-hero {
+    /* Adding a dark gradient overlay so the gold text is perfectly readable */
+    background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('../assets/images/others/banner.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid #333;
+}
+
+/* 2. Sleek Pill-Shaped Filter Buttons */
+.filter-wrapper {
+    position: sticky;
+    top: 0; /* Adjust this if you have a fixed header */
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 1px solid #222;
+}
+
+.filter-btn {
+    background: transparent;
+    color: #888;
+    border: 1px solid #444;
+    border-radius: 30px;
+    padding: 8px 24px;
+    margin: 5px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    border-color: gold;
+    color: #fff;
+}
+
+.filter-btn.active {
+    background: gold;
+    color: #000;
+    border-color: gold;
+    font-weight: bold;
+}
+
+/* 3. Perfect Grid Layout for Cards */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 4. Cleaner Menu Cards */
+.menu-card {
+    background: #0f0f0f;
+    border: 1px solid #222;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(255, 215, 0, 0.1);
+    border-color: #443a1a;
+}
+
+.menu-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid #222;
+}
+
+.menu-card .info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.veg-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.veg-dot.veg { background-color: #00ff88; box-shadow: 0 0 8px rgba(0,255,136,0.4); }
+.veg-dot.non-veg { background-color: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.4); }
+
+.card-desc {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.card-price {
+    font-size: 20px;
+    color: gold;
+    font-weight: bold;
+}
+
+.btn-add {
+    background: transparent;
+    color: gold;
+    border: 1px solid gold;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+    background: gold;
+    color: #000;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<section class="hero menu-hero">
+    <h1 class="logo-font" style="font-size: 60px; text-shadow: 2px 4px 8px rgba(0,0,0,0.8);">Our Menu</h1>
+    <p style="color: gold; font-family: 'Playfair Display', serif; font-size: 22px; text-shadow: 1px 2px 4px rgba(0,0,0,0.8);">Savor the whispers of taste.</p>
+</section>
+
+<div class="filter-wrapper">
+    <button class="filter-btn active" data-filter="all">All Items</button>
+    <?php foreach ($categories as $category): ?>
+        <button class="filter-btn" data-filter="<?php echo htmlspecialchars($category); ?>">
+            <?php echo ucfirst(htmlspecialchars($category)); ?>
+        </button>
+    <?php endforeach; ?>
     
-</head>
-
-<body>
-
-  <!-- Scroll to Top -->
-  <button onclick="topFunction()" id="scrollTopBtn" title="Go to top">↑</button>
-
-<div class="hero">
-  <h1 class="heading-font"></h1>
+    <div style="display: inline-flex; align-items: center; gap: 10px; margin-left: 15px; border-left: 1px solid #444; padding-left: 15px;">
+        <span style="color: #aaa; font-size: 14px;">Veg Only</span>
+        <label class="switch" style="margin: 0; transform: scale(0.8);">
+            <input type="checkbox" id="vegToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
 </div>
 
-  <!-- Menu Section -->
-  <section class="menu-section" id="menu">
-    <h2 class="heading-font">Our Menu</h2>
- <div class="veg-toggle-wrapper">
-    <span>All</span>
-
-    <label class="switch">
-      <input type="checkbox" id="vegToggle" onchange="applyVegFilter()">
-      <span class="slider"></span>
-    </label>
-
-    <span class="veg-label">🟢 Veg Only</span>
-  </div>
-
-    <div class="filter-buttons">
-      <button class="filter-btn active" onclick="filterMenu('all', this)">All</button>
-      <button class="filter-btn" onclick="filterMenu('soup', this)">Soup</button>
-      <button class="filter-btn" onclick="filterMenu('salad', this)">Salad</button>
-      <button class="filter-btn" onclick="filterMenu('nibbles', this)">Nibbles</button>
-      <button class="filter-btn" onclick="filterMenu('sandwich', this)">Sandwich</button>
-      <button class="filter-btn" onclick="filterMenu('pasta', this)">Pasta</button>
-      <button class="filter-btn" onclick="filterMenu('pizza', this)">Pizza</button>
-      <button class="filter-btn" onclick="filterMenu('desserts', this)">Desserts</button>
-      <button class="filter-btn" onclick="filterMenu('beverages', this)">Beverages</button>
-    </div>
-
-    <div class="soup">
-      <h3 class="category-heading">Soup</h3>
-      <div class="menu-items-container">
-        <?php foreach ($menuItems['soup'] as $item): ?>
-          <div class="menu-card soup <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-            <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-            <div class="info">
-              <h3><?php echo $item['name']; ?></h3>
-              <p><?php echo $item['description']; ?></p>
-              <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-              <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
+<div style="background-color: #050505; min-height: 50vh; padding-bottom: 60px;">
+    <div class="menu-grid" id="menuGrid">
+        <?php foreach ($menuItems as $item): ?>
+            <div class="menu-card" 
+                 data-category="<?php echo htmlspecialchars($item['category']); ?>" 
+                 data-veg="<?php echo $item['is_veg']; ?>">
+                 
+                <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" 
+                     alt="<?php echo htmlspecialchars($item['name']); ?>"
+                     onerror="this.src='../assets/images/others/placeholder.jpg'">
+                
+                <div class="info">
+                    <h3 class="card-title">
+                        <span class="veg-dot <?php echo $item['is_veg'] ? 'veg' : 'non-veg'; ?>"></span>
+                        <?php echo htmlspecialchars($item['name']); ?>
+                    </h3>
+                    
+                    <p class="card-desc"><?php echo htmlspecialchars($item['description']); ?></p>
+                    
+                    <div class="card-footer">
+                        <span class="card-price">₹<?php echo number_format($item['price'], 2); ?></span>
+                        
+                        <button class="btn-add" 
+                                onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars(addslashes($item['name'])); ?>', <?php echo $item['price']; ?>, '<?php echo htmlspecialchars(addslashes($item['image'])); ?>')">
+                            Add +
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
         <?php endforeach; ?>
-      </div>
     </div>
+</div>
 
-    <div class="salad">
-      <h3 class="category-heading">Salad</h3>
-      <div class="menu-items-container">
-        <?php foreach ($menuItems['salad'] as $item): ?>
-          <div class="menu-card salad <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-            <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-            <div class="info">
-              <h3><?php echo $item['name']; ?></h3>
-              <p><?php echo $item['description']; ?></p>
-              <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-              <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
+<div id="toast" class="toast-message">Item added to cart!</div>
 
-    <div class="nibbles">
-      <h3 class="category-heading">Nibbles</h3>
-      <div class="menu-items-container">
-        <?php foreach ($menuItems['nibbles'] as $item): ?>
-          <div class="menu-card nibbles <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-            <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-            <div class="info">
-              <h3><?php echo $item['name']; ?></h3>
-              <p><?php echo $item['description']; ?></p>
-              <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-              <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const menuCards = document.querySelectorAll('.menu-card');
+    const vegToggle = document.getElementById('vegToggle');
 
-      <div class="sandwich">
-        <h3 class="category-heading">Sandwich</h3>
-        <div class="menu-items-container">
-          <?php foreach ($menuItems['sandwich'] as $item): ?>
-            <div class="menu-card sandwich <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-              <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-              <div class="info">
-                <h3><?php echo $item['name']; ?></h3>
-                <p><?php echo $item['description']; ?></p>
-                <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-                <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+    function applyFilters() {
+        const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+        const isVegOnly = vegToggle.checked;
 
-      <div class="pasta">
-        <h3 class="category-heading">Pasta</h3>
-        <div class="menu-items-container">
-          <?php foreach ($menuItems['pasta'] as $item): ?>
-            <div class="menu-card pasta <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-              <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-              <div class="info">
-                <h3><?php echo $item['name']; ?></h3>
-                <p><?php echo $item['description']; ?></p>
-                <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-                <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+        menuCards.forEach((card, index) => {
+            const itemCategory = card.getAttribute('data-category');
+            const isItemVeg = card.getAttribute('data-veg') === '1';
 
-      <div class="pizza">
-        <h3 class="category-heading">Pizza</h3>
-        <div class="menu-items-container">
-          <?php foreach ($menuItems['pizza'] as $item): ?>
-            <div class="menu-card pizza <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-              <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-              <div class="info">
-                <h3><?php echo $item['name']; ?></h3>
-                <p><?php echo $item['description']; ?></p>
-                <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-                <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+            let categoryMatch = (activeFilter === 'all' || activeFilter === itemCategory);
+            let vegMatch = (!isVegOnly || isItemVeg);
 
-      <div class="desserts">
-        <h3 class="category-heading">Desserts</h3>
-        <div class="menu-items-container">
-          <?php foreach ($menuItems['desserts'] as $item): ?>
-            <div class="menu-card desserts <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-              <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-              <div class="info">
-                <h3><?php echo $item['name']; ?></h3>
-                <p><?php echo $item['description']; ?></p>
-                <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-                <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+            if (categoryMatch && vegMatch) {
+                card.style.display = 'flex'; // Use flex so the card layout doesn't break
+                card.style.animation = 'none';
+                card.offsetHeight; /* trigger reflow */
+                // Stagger the animation slightly for a cool effect
+                card.style.animation = `fadeInUp 0.4s ease forwards ${index * 0.05}s`;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 
-      <div class="beverages">
-        <h3 class="category-heading">Beverages</h3>
-        <div class="menu-items-container">
-          <?php foreach ($menuItems['beverages'] as $item): ?>
-            <div class="menu-card beverages <?php echo $item['is_veg'] ? 'veg' : 'nonveg'; ?>">
-              <img src="/TheWhisperingSpoon/assets/images/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onclick="openLightbox(this)">
-              <div class="info">
-                <h3><?php echo $item['name']; ?></h3>
-                <p><?php echo $item['description']; ?></p>
-                <div class="price">₹<?php echo number_format($item['price'], 2); ?></div>
-                <button class="add-cart-btn" data-id="<?php echo $item['id']; ?>">Add to Cart</button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            applyFilters();
+        });
+    });
 
-  </section>
+    vegToggle.addEventListener('change', applyFilters);
+});
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" src="#" alt="Zoomed Dish">
-  </div>
-</body>
+// REPLACE your addToCart function in public/menu.php with this:
 
-</html>
+function addToCart(id, name, price, image) {
+    let formData = new FormData();
+    formData.append('id', id);
+
+    fetch('../user/add-to-cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.status === 'success') {
+            // THIS is the magic line that updates the header instantly!
+            document.getElementById('cart-counter').innerText = data.totalItems;
+            
+            showToast(`${name} added!`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+</script>
+
 <?php include "../includes/footer.php"; ?>
