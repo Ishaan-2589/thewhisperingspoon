@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <meta charset="UTF-8">
   <title>Register | The Whispering Spoon</title>
 
-  <link rel="stylesheet" href="/TheWhisperingSpoon/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Parisienne&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 

@@ -5,7 +5,7 @@ include "../includes/header.php";
 
 <style>
 .hero-home {
-    background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(5, 5, 5, 0.9)), url('../assets/images/others/banner.png');
+    background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(5, 5, 5, 0.9)), url('/assets/images/others/banner.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed; 

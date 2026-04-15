@@ -15,7 +15,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Portal - The Whispering Spoon</title>
 
-  <link rel="stylesheet" href="/TheWhisperingSpoon/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
 
