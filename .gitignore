@@ -1,6 +1,4 @@
 # 🔒 Sensitive files
-.env
-includes/db.php
 
 # Logs
 *.log
