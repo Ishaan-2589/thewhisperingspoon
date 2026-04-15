@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "/includes/db.php";
 
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include "../includes/header.php"; 
+include "/includes/header.php"; 
 ?>
 
 <style>
@@ -156,7 +156,7 @@ include "../includes/header.php";
             if ($item = mysqli_fetch_assoc($result)):
         ?>
             <div class="summary-item">
-                <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="Dish" onerror="this.src='../assets/images/others/placeholder.jpg'">
+                <img src="/assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="Dish" onerror="this.src='/assets/images/others/placeholder.jpg'">
                 <div class="summary-info">
                     <h4><?php echo htmlspecialchars($item['name']); ?></h4>
                     <p>Qty: <?php echo $quantity; ?></p>
@@ -220,4 +220,4 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
 });
 </script>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>

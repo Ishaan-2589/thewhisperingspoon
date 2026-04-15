@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "/includes/db.php";
 
 // Ensure user is logged in
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -56,7 +56,7 @@ mysqli_stmt_execute($stmt);
 $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 mysqli_stmt_close($stmt);
 
-include "../includes/header.php"; 
+include "/includes/header.php"; 
 ?>
 
 <style>
@@ -139,4 +139,4 @@ include "../includes/header.php";
     </form>
 </div>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>

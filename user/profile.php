@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "/includes/db.php";
 
 // Ensure user has a session
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -23,7 +23,7 @@ mysqli_stmt_close($stmt);
 if (!$user) {
     session_unset();
     session_destroy();
-    header("Location: ../auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -33,7 +33,7 @@ if (!empty($user['name'])) {
     $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ""));
 }
 
-include "../includes/header.php"; 
+include "/includes/header.php"; 
 ?>
 
 <style>
@@ -189,11 +189,11 @@ include "../includes/header.php";
     </div>
 
     <div class="logout-btn-container">
-        <a href="../auth/logout.php" class="btn-logout">
+        <a href="/auth/logout.php" class="btn-logout">
             Log Out
         </a>
     </div>
 
 </div>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>

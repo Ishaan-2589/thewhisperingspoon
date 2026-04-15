@@ -1,10 +1,10 @@
 ﻿<?php
 session_start();
-require_once "../includes/db.php";
+require_once "/includes/db.php";
 
 // Ensure user is logged in
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../auth/login.php");
+    header("Location: /auth/login.php");
     exit;
 }
 
@@ -51,7 +51,7 @@ mysqli_stmt_bind_param($stmt, "i", $userId);
 mysqli_stmt_execute($stmt);
 $ordersResult = mysqli_stmt_get_result($stmt);
 
-include "../includes/header.php"; 
+include "/includes/header.php"; 
 ?>
 
 <style>
@@ -107,7 +107,7 @@ include "../includes/header.php";
         <div class="empty-orders">
             <i class="fas fa-receipt"></i>
             <p>You haven't placed any orders yet.</p>
-            <a href="../public/menu.php" class="btn-menu">Explore The Menu</a>
+            <a href="/public/menu.php" class="btn-menu">Explore The Menu</a>
         </div>
     <?php else: ?>
         
@@ -155,7 +155,7 @@ include "../includes/header.php";
                     while ($item = mysqli_fetch_assoc($itemsResult)):
                     ?>
                         <div class="order-item">
-                            <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="Dish" onerror="this.src='../assets/images/others/placeholder.jpg'">
+                            <img src="/assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="Dish" onerror="this.src='/assets/images/others/placeholder.jpg'">
                             <div class="order-item-info">
                                 <div class="order-item-name"><?php echo htmlspecialchars($item['name']); ?></div>
                                 <div class="order-item-qty">Quantity: <?php echo $item['quantity']; ?></div>
@@ -173,4 +173,4 @@ include "../includes/header.php";
     <?php mysqli_stmt_close($stmt); ?>
 </div>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>

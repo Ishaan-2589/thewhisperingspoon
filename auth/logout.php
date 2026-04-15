@@ -6,6 +6,6 @@ session_unset();
 session_destroy();
 
 // Redirect to the homepage
-header("Location: ../public/index.php");
+header("Location: /public/index.php");
 exit;
 ?>

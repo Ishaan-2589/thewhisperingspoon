@@ -1,16 +1,16 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "/includes/db.php";
 
 // If someone tries to access this page directly without placing an order, send them home
 if (!isset($_SESSION['last_order_id'])) {
-    header("Location: ../public/index.php");
+    header("Location: /public/index.php");
     exit;
 }
 
 $orderId = $_SESSION['last_order_id'];
 
-include "../includes/header.php"; 
+include "/includes/header.php"; 
 ?>
 
 <style>
@@ -170,10 +170,10 @@ include "../includes/header.php";
         
         <div class="action-buttons">
             <a href="my-orders.php" class="btn-primary">Track Order</a>
-            <a href="../public/menu.php" class="btn-secondary">Back to Menu</a>
+            <a href="/public/menu.php" class="btn-secondary">Back to Menu</a>
         </div>
         
     </div>
 </div>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>

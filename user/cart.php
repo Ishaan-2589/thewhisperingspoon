@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../includes/db.php";
-include "../includes/header.php";
+require_once "/includes/db.php";
+include "/includes/header.php";
 
 $total = 0;
 ?>
@@ -42,7 +42,7 @@ $total = 0;
 <?php if (empty($_SESSION['cart'])): ?>
     <div class="empty-cart">
         <p>Your cart is currently empty. The kitchen awaits your order!</p>
-        <a href="../public/menu.php" class="checkout-btn" style="margin-top: 25px;">Explore Our Menu</a>
+        <a href="/public/menu.php" class="checkout-btn" style="margin-top: 25px;">Explore Our Menu</a>
     </div>
 <?php else: ?>
 
@@ -57,7 +57,7 @@ $total = 0;
         $total += $subtotal;
     ?>
         <div class="cart-item">
-            <img src="../assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" onerror="this.src='../assets/images/others/placeholder.jpg'">
+            <img src="/assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" onerror="this.src='/assets/images/others/placeholder.jpg'">
             
             <div class="cart-info">
                 <h3><?php echo htmlspecialchars($item['name']); ?></h3>
@@ -89,4 +89,4 @@ $total = 0;
 <?php endif; ?>
 </div>
 
-<?php include "../includes/footer.php"; ?>
+<?php include "/includes/footer.php"; ?>
