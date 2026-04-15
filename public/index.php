@@ -4,7 +4,6 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* --- Home Page Luxury Styles --- */
 .hero-home {
     background: linear-gradient(rgba(5, 5, 5, 0.6), rgba(5, 5, 5, 0.9)), url('../assets/images/others/banner.png');
     background-size: cover;
@@ -65,7 +64,6 @@ include "../includes/header.php";
 .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; margin-bottom: 15px; }
 .feature-card p { color: #888; line-height: 1.7; font-size: 15px; }
 
-/* NEW: Mini About & Contact Split Section */
 .info-split { display: grid; grid-template-columns: 1fr 1fr; background: #0a0a0a; border-top: 1px solid #222; }
 .info-block { padding: 80px 10%; text-align: left; }
 .info-block h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: gold; margin-bottom: 20px; }

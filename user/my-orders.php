@@ -55,7 +55,6 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* Luxury Order History UI */
 .orders-hero { text-align: center; padding: 40px 20px; border-bottom: 1px solid #333; margin-bottom: 40px; background: #050505;}
 .orders-hero h1 { font-size: 42px; color: gold; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
 
@@ -65,7 +64,6 @@ include "../includes/header.php";
 .empty-orders i { font-size: 48px; color: #444; margin-bottom: 20px; display: block; }
 .empty-orders p { color: #888; font-size: 18px; margin-bottom: 25px; }
 
-/* Order Card Styles */
 .order-card { background: #0a0a0a; border: 1px solid #222; border-radius: 16px; margin-bottom: 30px; overflow: hidden; transition: border-color 0.3s; }
 .order-card:hover { border-color: #332a10; box-shadow: 0 10px 30px rgba(255, 215, 0, 0.05); }
 
@@ -76,7 +74,6 @@ include "../includes/header.php";
 .order-header-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end;}
 .order-total { color: gold; font-size: 20px; font-weight: bold; font-family: 'Playfair Display', serif; margin-bottom: 8px; }
 
-/* Status Badges */
 .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;}
 .status-Pending { background: rgba(255, 204, 0, 0.1); border: 1px solid #ffcc00; color: #ffcc00; }
 .status-Preparing { background: rgba(0, 195, 255, 0.1); border: 1px solid #00c3ff; color: #00c3ff; }
@@ -84,7 +81,6 @@ include "../includes/header.php";
 .status-Delivered { background: rgba(136, 136, 136, 0.1); border: 1px solid #888; color: #888; }
 .status-Cancelled { background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; color: #ff4444; }
 
-/* Order Body (Items) */
 .order-body { padding: 25px; background: #050505; }
 .order-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #1a1a1a; }
 .order-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
@@ -97,7 +93,6 @@ include "../includes/header.php";
 .btn-menu { display: inline-block; background: gold; color: #000; padding: 12px 30px; border-radius: 30px; font-weight: bold; text-decoration: none; transition: transform 0.3s; }
 .btn-menu:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2); }
 
-/* Reorder Button */
 .btn-reorder { background: transparent; border: 1px solid gold; color: gold; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 6px;}
 .btn-reorder:hover { background: gold; color: #000; box-shadow: 0 4px 10px rgba(255, 215, 0, 0.2); }
 </style>

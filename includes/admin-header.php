@@ -20,7 +20,6 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
 
   <style>
-  /* Admin-Specific Navbar Styles */
   body {
       background-color: #050505 !important;
       color: #fff !important;

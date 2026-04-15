@@ -54,7 +54,7 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* Luxury Reservation UI */
+
 .booking-hero { text-align: center; padding: 40px 20px; border-bottom: 1px solid #333; margin-bottom: 40px; background: #050505;}
 .booking-hero h1 { font-size: 48px; color: gold; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
 
@@ -62,7 +62,7 @@ include "../includes/header.php";
 
 .booking-form { background: #111; padding: 40px; border-radius: 12px; border: 1px solid #222; box-shadow: 0 15px 35px rgba(255, 215, 0, 0.05); position: relative; overflow: hidden;}
 
-/* Gold top border accent */
+
 .booking-form::before {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
     background: linear-gradient(90deg, transparent, gold, transparent);
@@ -75,7 +75,6 @@ include "../includes/header.php";
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: 'Roboto', sans-serif; transition: border-color 0.3s; box-sizing: border-box;}
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: gold; }
 
-/* Customizing Date/Time Picker Icons for Dark Mode */
 ::-webkit-calendar-picker-indicator { filter: invert(1) sepia(100%) saturate(500%) hue-rotate(1deg) brightness(1.5); cursor: pointer; }
 
 .btn-book { display: block; width: 100%; padding: 16px; background: gold; color: #000; border: none; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 20px; text-transform: uppercase; letter-spacing: 2px;}

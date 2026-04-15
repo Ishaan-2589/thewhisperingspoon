@@ -21,7 +21,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 <?php include "../includes/header.php"; ?>
 
 <style>
-/* --- Beautification Styles for Menu Page --- */
 
 /* 1. The Hero Banner Fix */
 .hero.menu-hero {
@@ -125,7 +124,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Make the title link look good */
 .dish-link { color: inherit; text-decoration: none; transition: color 0.3s; }
 .dish-link:hover { color: gold; }
 </style>

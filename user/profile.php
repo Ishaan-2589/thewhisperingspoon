@@ -27,7 +27,6 @@ if (!$user) {
     exit;
 }
 
-// Generate Initials for the Avatar (e.g., "John Doe" -> "JD")
 $initials = "U";
 if (!empty($user['name'])) {
     $words = explode(" ", trim($user['name']));
@@ -38,7 +37,6 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* Modern App-Like Profile UI */
 .profile-wrapper {
     max-width: 480px;
     margin: 40px auto 80px;
@@ -46,7 +44,6 @@ include "../includes/header.php";
     font-family: 'Roboto', sans-serif;
 }
 
-/* Avatar Section */
 .profile-header-app {
     text-align: center;
     margin-bottom: 40px;
@@ -82,7 +79,6 @@ include "../includes/header.php";
     letter-spacing: 0.5px;
 }
 
-/* Stacked Action Menu (iOS Style) */
 .profile-menu {
     background: #111;
     border-radius: 16px;
@@ -128,7 +124,6 @@ include "../includes/header.php";
     font-size: 14px;
 }
 
-/* Instagram-style Logout Button */
 .logout-btn-container {
     margin-top: 20px;
 }
@@ -139,7 +134,7 @@ include "../includes/header.php";
     text-align: center;
     padding: 16px;
     border-radius: 16px;
-    background: rgba(255, 68, 68, 0.05); /* Very faint red background */
+    background: rgba(255, 68, 68, 0.05);
     color: #ff4444;
     text-decoration: none;
     font-weight: bold;

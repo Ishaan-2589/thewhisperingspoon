@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         mysqli_stmt_close($stmt);
     } else {
-        // Fallback if columns are missing: store in session for now
         $_SESSION['notification_settings'] = [
             'email_notifications' => $emailNotifications,
             'sms_notifications' => $smsNotifications,

@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Insert menu items
+-- menu items
 INSERT INTO menu_items (name, description, price, image, category, is_veg) VALUES
 ('Manchow', 'Hot and spicy Chinese-style soup.', 199.00, 'soup/manchow.jpg', 'soup', 0),
 ('Mushroom Cappuccino', 'Earthy mushrooms blended into a creamy soup.', 199.00, 'soup/mushroomcappuccino.jpg', 'soup', 1),

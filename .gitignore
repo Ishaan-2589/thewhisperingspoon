@@ -1,0 +1,13 @@
+# 🔒 Sensitive files
+.env
+includes/db.php
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

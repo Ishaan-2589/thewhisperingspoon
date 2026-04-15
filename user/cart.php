@@ -7,7 +7,6 @@ $total = 0;
 ?>
 
 <style>
-/* Luxury Cart UI */
 .cart-hero { text-align: center; padding: 40px 20px; border-bottom: 1px solid #333; margin-bottom: 40px; background: #050505;}
 .cart-hero h1 { font-size: 48px; color: gold; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
 .cart-wrapper { max-width: 900px; margin: 0 auto; padding: 0 20px; min-height: 50vh; }

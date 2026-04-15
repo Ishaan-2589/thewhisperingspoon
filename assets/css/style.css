@@ -15,7 +15,6 @@ body {
     line-height: 1.6;
     scroll-behavior: smooth;
 }
-/* ================= LOGIN PAGE ================= */
 
 .login-section {
     min-height: calc(100vh - 180px);
@@ -32,8 +31,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
-
-
 
 .login-box {
     background-color: #111;
@@ -60,7 +57,6 @@ body {
     margin-bottom: 25px;
 }
 
-/* Form */
 .login-group {
     text-align: left;
     margin-bottom: 20px;
@@ -89,7 +85,6 @@ body {
     border-color: gold;
 }
 
-/* Button */
 .login-btn {
     width: 100%;
     padding: 14px;
@@ -107,7 +102,6 @@ body {
     background-color: #ffcc00;
 }
 
-/* Footer text */
 .login-footer-text {
     margin-top: 20px;
     font-size: 14px;
@@ -152,7 +146,6 @@ header {
     border-bottom: 2px solid gold;
 }
 
-
 nav a {
     color: white;
     text-decoration: none;
@@ -181,7 +174,8 @@ nav a:hover {
     position: relative;
     overflow: hidden;
     min-height: 400px;
-}/* Smaller hero for menu page */
+}
+
 .hero.menu-hero {
     min-height: 220px;
     padding: 60px 20px;
@@ -211,7 +205,6 @@ nav a:hover {
   background: black;
   z-index: 10;
 }
-
 
 .filter-btn {
     padding: 10px 20px;
@@ -366,7 +359,6 @@ footer {
   font-weight: bold;
 }
 
-/* Toggle switch */
 .switch {
   position: relative;
   width: 50px;
@@ -500,7 +492,6 @@ input:checked + .slider::before {
   font-weight: bold;
 }
 
-/* Order History Styles */
 .order-card {
   background-color: #111;
   border: 1px solid #444;
@@ -553,8 +544,6 @@ input:checked + .slider::before {
   color: #fff;
   font-size: 14px;
 }
-
-/* ================= ORDER SUCCESS PAGE ================= */
 
 .success-section {
     padding: 60px 30px;
@@ -626,7 +615,6 @@ input:checked + .slider::before {
     color: black;
 }
 
-/* Order History Styles */
 .order-card {
     background-color: #111;
     border: 1px solid #444;
@@ -688,7 +676,6 @@ input:checked + .slider::before {
     color: #aaa;
 }
 
-/* === Profile / Dashboard / Global Components === */
 .profile-container,
 .dashboard-container {
     max-width: 1200px;
@@ -825,13 +812,11 @@ a.logout-trigger:hover {
     border-color: #662b2d;
 }
 
-/* Admin Specific Enhancements */
 .admin-body {
     background-color: #0a0a0a;
     color: #e0e0e0;
 }
 
-/* Enhanced Stat Cards */
 .stats-grid .stat-card {
     background: linear-gradient(145deg, #1a1a1a, #111);
     border: 1px solid rgba(255, 215, 0, 0.1);
@@ -859,7 +844,6 @@ a.logout-trigger:hover {
     font-family: 'Playfair Display', serif;
 }
 
-/* Dark Mode Tables */
 .orders-table, .menu-table, .users-table {
     background: #111 !important;
     border: 1px solid #333;
@@ -880,7 +864,6 @@ table td {
     color: #ccc;
 }
 
-/* Status Select Styling */
 .status-select {
     background: #000;
     color: gold;

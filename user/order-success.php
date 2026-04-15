@@ -10,14 +10,10 @@ if (!isset($_SESSION['last_order_id'])) {
 
 $orderId = $_SESSION['last_order_id'];
 
-// We don't unset the session ID immediately just in case they refresh the page, 
-// but in a strict production environment, you might clear it here.
-
 include "../includes/header.php"; 
 ?>
 
 <style>
-/* Luxury Success UI */
 .success-wrapper {
     min-height: 60vh;
     display: flex;
@@ -40,7 +36,6 @@ include "../includes/header.php";
     overflow: hidden;
 }
 
-/* Subtle gold glow at the top of the card */
 .success-card::before {
     content: '';
     position: absolute;
@@ -51,7 +46,6 @@ include "../includes/header.php";
     background: linear-gradient(90deg, transparent, gold, transparent);
 }
 
-/* Animated Checkmark */
 .checkmark-circle {
     width: 80px;
     height: 80px;
@@ -139,7 +133,6 @@ include "../includes/header.php";
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* Animations */
 @keyframes scaleIn {
     0% { transform: scale(0); }
     100% { transform: scale(1); }

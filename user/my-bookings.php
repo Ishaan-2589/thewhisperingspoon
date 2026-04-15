@@ -37,7 +37,6 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* Luxury Bookings UI */
 .bookings-hero { text-align: center; padding: 40px 20px; border-bottom: 1px solid #333; margin-bottom: 40px; background: #050505;}
 .bookings-hero h1 { font-size: 42px; color: gold; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
 
@@ -55,7 +54,6 @@ include "../includes/header.php";
 .booking-details i { color: gold; width: 16px; text-align: center; margin-right: 5px; }
 .booking-message { color: #666; font-size: 13px; font-style: italic; }
 
-/* Status Badges */
 .status-badge { padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align: center;}
 .status-Pending { background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid #ffcc00; }
 .status-Confirmed { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid #00ff88; }
@@ -70,7 +68,6 @@ include "../includes/header.php";
 .btn-cancel { background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;}
 .btn-cancel:hover { background: #ff4444; color: #fff; box-shadow: 0 4px 10px rgba(255, 68, 68, 0.3); }
 
-/* LUXURY CUSTOM DIALOG MODAL */
 .custom-modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);

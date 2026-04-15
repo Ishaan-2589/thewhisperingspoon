@@ -22,7 +22,7 @@ foreach ($_SESSION['cart'] as $id => $quantity) {
         $grandTotal += $item['price'] * $quantity;
     }
 }
-// NEW: Check if store is open
+
 $statusQuery = "SELECT setting_value FROM settings WHERE setting_key = 'store_status'";
 $statusResult = mysqli_fetch_assoc(mysqli_query($conn, $statusQuery));
 $storeStatus = $statusResult['setting_value'] ?? 'open';
@@ -36,9 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $paymentMethod = $_POST['payment_method'];
     $paymentId = isset($_POST['payment_id']) ? $_POST['payment_id'] : 'COD';
-    $specialRequests = trim($_POST['special_requests'] ?? ''); // NEW: Capture special requests
+    $specialRequests = trim($_POST['special_requests'] ?? ''); 
 
-    // NEW: Added special_requests to the INSERT query (5 variables: idsss)
     $orderQuery = "INSERT INTO orders (user_id, total_amount, payment_method, special_requests, status, payment_id, created_at) VALUES (?, ?, ?, ?, 'Pending', ?, NOW())";
     $stmt = mysqli_prepare($conn, $orderQuery);
     mysqli_stmt_bind_param($stmt, "idsss", $userId, $grandTotal, $paymentMethod, $specialRequests, $paymentId);
@@ -73,7 +72,6 @@ include "../includes/header.php";
 ?>
 
 <style>
-/* Keeping your existing Checkout UI */
 .checkout-hero { text-align: center; padding: 40px 20px; border-bottom: 1px solid #333; margin-bottom: 40px; background: #050505;}
 .checkout-hero h1 { font-size: 48px; color: gold; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
 .checkout-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -85,7 +83,6 @@ include "../includes/header.php";
 .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: 'Roboto', sans-serif; transition: border-color 0.3s;}
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: gold; }
 
-/* NEW: Quick Tags for Dietary Requests */
 .quick-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
 .quick-tag { background: #222; border: 1px solid #444; color: #ccc; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.3s; }
 .quick-tag:hover { border-color: gold; color: gold; }
@@ -184,7 +181,6 @@ include "../includes/header.php";
 </div>
 
 <script>
-// Logic to append quick tags to the text box
 function addTag(text) {
     const box = document.getElementById('special_requests');
     if (box.value.length > 0) {
