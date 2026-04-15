@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /auth/login.php");
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include "/includes/header.php"; 
+include "../includes/header.php"; 
 ?>
 
 <style>
@@ -220,4 +220,4 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
 });
 </script>
 
-<?php include "/includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

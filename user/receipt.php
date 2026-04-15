@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 // Ensure user is logged in
 if (!isset($_SESSION["user_id"])) {

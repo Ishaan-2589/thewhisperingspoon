@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "/includes/db.php";
-include "/includes/header.php";
+require_once "../includes/db.php";
+include "../includes/header.php";
 
 $total = 0;
 ?>
@@ -89,4 +89,4 @@ $total = 0;
 <?php endif; ?>
 </div>
 
-<?php include "/includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

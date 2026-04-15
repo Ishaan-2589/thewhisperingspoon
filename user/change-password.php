@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /TheWhisperingSpoon/auth/login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include '/includes/header.php';
+include '../includes/header.php';
 ?>
 
 <main style="padding: 40px; max-width: 650px; margin: auto;">
@@ -80,4 +80,4 @@ include '/includes/header.php';
     </form>
 </main>
 
-<?php include '/includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

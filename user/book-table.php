@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 // 1. Ensure user is logged in
 if (!isset($_SESSION["user_id"])) {
-    header("Location: /auth/login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include "/includes/header.php"; 
+include "../includes/header.php"; 
 ?>
 
 <style>
@@ -168,4 +168,4 @@ include "/includes/header.php";
     </div>
 </div>
 
-<?php include "/includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

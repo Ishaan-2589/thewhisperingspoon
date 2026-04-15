@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 // If someone tries to access this page directly without placing an order, send them home
 if (!isset($_SESSION['last_order_id'])) {
@@ -10,7 +10,7 @@ if (!isset($_SESSION['last_order_id'])) {
 
 $orderId = $_SESSION['last_order_id'];
 
-include "/includes/header.php"; 
+include "../includes/header.php"; 
 ?>
 
 <style>
@@ -176,4 +176,4 @@ include "/includes/header.php";
     </div>
 </div>
 
-<?php include "/includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

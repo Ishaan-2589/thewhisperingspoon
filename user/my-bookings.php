@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "/includes/db.php";
+require_once "../includes/db.php";
 
 // Ensure user is logged in
 if (!isset($_SESSION["user_id"])) {
@@ -33,7 +33,7 @@ mysqli_stmt_bind_param($stmt, "i", $userId);
 mysqli_stmt_execute($stmt);
 $bookingsResult = mysqli_stmt_get_result($stmt);
 
-include "/includes/header.php"; 
+include "../includes/header.php"; 
 ?>
 
 <style>
@@ -192,4 +192,4 @@ function confirmCancellation() {
 }
 </script>
 
-<?php include "/includes/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>
