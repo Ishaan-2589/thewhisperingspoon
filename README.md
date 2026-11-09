@@ -1,95 +1,123 @@
-# 🍽️ The Whispering Spoon
 
-A premium, full-stack luxury restaurant management system and customer-facing web application. Built with PHP, MySQL, and vanilla JavaScript, this project simulates a complete commercial restaurant workflow—from a customer browsing the menu to the chef cooking the food, and the manager analyzing monthly sales.
+# The Whispering Spoon 🍽️
 
-![Project Banner](assets/images/others/banner.png)
+**The Whispering Spoon** is a restaurant website designed to provide an elegant and interactive digital dining experience. It combines a visually appealing interface with essential restaurant functionalities, allowing customers to explore menu items and manage their food selections.
 
----
+The project uses PHP and MySQL for backend operations and database management, alongside HTML, CSS, and JavaScript for the frontend.
 
-## ✨ Key Features
+## Features
 
-### 👤 Customer Experience (Frontend)
-* **Interactive Menu:** Browse dishes with real-time filtering (by category or Veg/Non-veg toggle) and CSS-animated staggered rendering.
-* **Smart Cart & Checkout:** Add items to cart, select delivery options, simulate secure online payments, and add custom dietary/special requests.
-* **Order History & One-Click Reorder:** View past orders and instantly re-populate the cart with a single click.
-* **PDF Invoices:** Dynamically generate and download beautifully formatted paper-style receipts using `html2pdf.js`.
-* **Table Reservations:** Book tables for specific dates/times, view live status updates, and cancel upcoming bookings via a custom dark-mode UI modal.
-* **Reviews & Ratings:** View detailed dish pages and leave 1-to-5 star reviews with comments.
-* **Profile Management:** Update personal details, default delivery addresses, and securely change passwords.
-* **Email Integration:** Fully functional Contact form that sends real HTML emails via SMTP (PHPMailer).
+### Restaurant Menu
+- Browse available food items.
+- Explore menu categories.
+- View individual food item details.
+- Filter vegetarian and non-vegetarian items.
+- Interactive menu interface.
 
-### 👨‍🍳 Admin & Kitchen Operations (Backend)
-* **Live Kitchen Display System (KDS):** A real-time, auto-syncing board for chefs. Orders move from "New" ➡️ "Cooking" ➡️ "Ready". Features live wait-time tracking and flashing red warnings for allergy/special requests.
-* **Sales Analytics Dashboard:** Time-travel reporting! Filter by month and year to view total revenue, items sold, and a visual Bar Chart (via `Chart.js`) of the Top 5 best-selling dishes.
-* **Order & Booking Management:** Manually confirm/decline table reservations and track all incoming food orders.
-* **Master Kill Switch:** A global "Store Settings" toggle to open or close the kitchen. Closing the store automatically disables the checkout button for all users.
+### Shopping Cart
+- Add food items to the cart.
+- View selected items.
+- Manage cart contents.
+- Review selections before proceeding.
 
----
+### Menu Management
+- Add new menu items.
+- Update existing food item details.
+- Delete menu items.
+- Manage restaurant menu information through the backend.
 
-## 🛠️ Tech Stack
+### User Interface
+- Elegant black and golden visual theme.
+- Responsive website layout.
+- Interactive elements and navigation.
+- Category-based menu browsing.
 
-* **Frontend:** HTML5, CSS3 (Custom Luxury Dark/Gold Theme), Vanilla JavaScript
-* **Backend:** PHP 8+ (Session-based authentication, Native routing)
-* **Database:** MySQL (Relational database with cascading foreign keys)
-* **Libraries/APIs:** * `Chart.js` (Sales Analytics)
-  * `html2pdf.js` (Receipt Generation)
-  * `PHPMailer` (SMTP Email Gateway)
-  * FontAwesome (Icons)
+## Technology Stack
 
----
+| Technology | Purpose |
+|---|---|
+| HTML5 | Website structure |
+| CSS3 | Styling and responsive design |
+| JavaScript | Frontend interactions |
+| PHP | Backend development |
+| MySQL | Database management |
+| XAMPP | Local development environment |
 
-## 🚀 Installation & Setup
+## Getting Started
 
-* To run this project locally on your machine, you will need a local server environment like **XAMPP**, **WAMP**, or **MAMP**.
+### Prerequisites
 
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/Ishaan-2589/thewhisperingspoon.git](https://github.com/Ishaan-2589/thewhisperingspoon.git)
+Before running the project, ensure you have:
+
+- XAMPP installed.
+- Apache server configured.
+- MySQL database server.
+- A modern web browser.
+- A code editor such as Visual Studio Code.
+
+### 1. Download the Project
+
+Download or clone the repository and open the project folder.
+
+### 2. Move the Project to XAMPP
+
+Place the project directory inside the XAMPP `htdocs` folder.
+
+For example:
+
+```text
+C:\xampp\htdocs\whispering-spoon
 ```
-* Move the cloned folder into your local server's root directory (e.g., C:/xampp/htdocs/TheWhisperingSpoon).
 
-### 2. Database Setup
-* Open phpMyAdmin (http://localhost/phpmyadmin).
+### 3. Start XAMPP Services
 
-* Create a new database named exactly: thewhisperingspoon.
+Open the XAMPP Control Panel and start:
 
-* Import the provided SQL file (if you exported one, e.g., database.sql) into this new database to instantly create all tables (users, menu_items, orders, order_items, bookings, reviews, settings).
+- Apache
+- MySQL
 
-### 3. Configuration
-* Open /includes/db.php.
+### 4. Configure the Database
 
-* Ensure the database credentials match your local setup:
+Open phpMyAdmin:
 
-* PHP
-$host = "localhost";
-$user = "root";       // Default XAMPP user
-$password = "";       // Default XAMPP password (blank)
-$dbname = "thewhisperingspoon";
+```text
+http://localhost/phpmyadmin
+```
 
-### 4. Email Configuration (Optional)
-* To enable the Contact form to send real emails:
+Create a database named:
 
-* Open /includes/mailer.php.
+```text
+whispering_spoon
+```
 
-* Replace the placeholder Gmail address and 16-digit App Password with your own credentials.
+Import the project's database SQL file if one is included.
 
-### 5. Run the App
-* Open your browser and navigate to: http://localhost/TheWhisperingSpoon/public/index.php
+Update the database connection settings in the PHP configuration file with your local MySQL credentials.
 
-## 🔒 Security Hardening (Production Ready)
-* This application includes several production-ready security measures:
+### 5. Run the Website
 
-* Password Hashing: All user passwords are encrypted using PHP's native password_hash() (Bcrypt).
+Open your browser and visit:
 
-* Prepared Statements: 100% of database queries use mysqli_prepare and bound parameters to prevent SQL Injection.
+```text
+http://localhost/whispering-spoon/
+```
 
-* Directory Protection: Included .htaccess file prevents directory listing and protects sensitive include files.
+The website should now be accessible through your local XAMPP server.
 
-* Error Silencing: PHP errors are disabled in db.php to prevent path disclosure attacks on live servers.
+## Project Overview
 
-## 👨‍💻 Author
-* [Ishaan] * GitHub: @Ishaan-2589
+The Whispering Spoon brings together restaurant menu browsing, food selection, cart management, and backend-driven menu operations in a single web application.
 
-* LinkedIn: www.linkedin.com/in/ishaan-bcajims
+The project focuses on combining functional web development with a consistent visual identity and an intuitive user experience.
 
-If you like this project, please consider giving it a ⭐!
+## Future Improvements
+
+- Online ordering and payment integration.
+- Customer registration and login.
+- Order history and tracking.
+- Enhanced restaurant administration.
+- Improved mobile experience.
+
+---
+
+**The Whispering Spoon** — An elegant digital dining experience.
